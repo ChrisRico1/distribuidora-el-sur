@@ -13,9 +13,12 @@ Es una aplicación estática. Abrir `index.html` en un navegador o publicarla me
 - **Portal mayorista:** catálogo, carrito, datos del comercio y generación de pedidos demo.
 - **Circuito operativo integrado (v2):** ingreso del pedido, preparación con reserva de stock, asignación a vehículo, resultado de visita y conciliación de devoluciones.
 - **Indicadores de actividad:** seguimiento de pedidos creados y entregas/devoluciones realizadas dentro de la sesión demo.
+- **BI operativo (v3):** desglose dinámico de pedidos por estado e importe por localidad, basado en los pedidos creados en la demo.
+- **Persistencia reforzada (v3):** los cambios manuales de flota y los avances simulados también se guardan en el navegador.
+- **Reinicio de demostración (v3):** permite borrar el escenario local y volver a los datos iniciales.
 
 ## Datos y limitaciones
-Todos los datos, precios, vehículos, recorridos, clientes e indicadores son ficticios y se utilizan exclusivamente para demostración. Las operaciones del circuito v2 se guardan en el almacenamiento local del navegador (`localStorage`) para conservar el escenario de demostración al recargar la página. No existe una base de datos compartida, autenticación, sincronización entre usuarios ni registro comercial real. Los pedidos, movimientos y métricas son datos de simulación.
+Todos los datos, precios, vehículos, recorridos, clientes e indicadores son ficticios y se utilizan exclusivamente para demostración. Las operaciones del circuito v2/v3 se guardan en el almacenamiento local del navegador (`localStorage`) para conservar el escenario de demostración al recargar la página. No existe una base de datos compartida, autenticación, sincronización entre usuarios ni registro comercial real. Los pedidos, movimientos y métricas son datos de simulación. El botón “Reiniciar demo” elimina el estado local guardado en ese navegador y recarga los datos iniciales.
 
 No están conectados GPS, WhatsApp, ERP, facturación, medios de pago, mapas cartográficos ni servicios de optimización de rutas. La vista de mapa es esquemática y las posiciones no representan ubicaciones reales.
 
