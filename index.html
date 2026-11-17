@@ -185,10 +185,10 @@ renderFleet();renderStock();renderProducts();renderCart();renderChart();renderLo
   if($id('vehicleStock'))$id('vehicleStock').textContent=vehicleStock.toLocaleString('es-AR');
   if($id('returnsCount'))$id('returnsCount').textContent=returns;
   if($id('kpiVehicles'))$id('kpiVehicles').innerHTML=fleet.filter(v=>['En camino','Próxima parada','Demora reportada'].includes(v.status)).length+' <small style="font-size:13px;color:var(--muted)">/ 10</small>';
-  if($id('kpiDeliveries'))$id('kpiDeliveries').textContent=64;
+  if($id('kpiDeliveries'))$id('kpiDeliveries').textContent=64+orders.length;
   if($id('deliveredCount'))$id('deliveredCount').textContent=delivered+' entregadas';
-  if($id('progressValue'))$id('progressValue').innerHTML=delivered+' <span style="font-size:12px;color:var(--muted);font-weight:500">/ 64 entregas</span>';
-  if($id('progressBar'))$id('progressBar').style.width=Math.min(100,delivered/64*100)+'%';
+  if($id('progressValue'))$id('progressValue').innerHTML=delivered+' <span style="font-size:12px;color:var(--muted);font-weight:500">/ '+(64+orders.length)+' entregas</span>';
+  if($id('progressBar'))$id('progressBar').style.width=Math.min(100,delivered/(64+orders.length)*100)+'%';
   if($id('logDelivered'))$id('logDelivered').textContent=delivered;
   if($id('logTransit'))$id('logTransit').textContent=transit;
   if($id('logPending'))$id('logPending').textContent=pending;
@@ -215,7 +215,7 @@ renderFleet();renderStock();renderProducts();renderCart();renderChart();renderLo
   if(!customer||!zone){toast('Completá el comercio y la localidad.');return;}
   const total=items.reduce((n,i)=>n+i.qty*i.price,0);
   const id='ES-'+String(1060+orderSequence++).padStart(4,'0');
-  orders.push({id,customer,zone,items,total,status:'Ingresado',unit:null,createdAt:new Date().toISOString()});
+  orders.push({id,customer,zone,items,total,status:'Ingresado',unit:null,createdAt:new Date().toISOString()});pending++;
   cart={};renderProducts();renderCart();renderOrders();save();
   addMovement('Pedido ingresado · '+id,customer+' · '+zone,'Ingresado');
   toast('Pedido '+id+' ingresó al circuito de depósito.');
@@ -237,17 +237,17 @@ renderFleet();renderStock();renderProducts();renderCart();renderChart();renderLo
    o.items.forEach(i=>{reserved[i.sku]=Math.max(0,(reserved[i.sku]||0)-i.qty);});
    const units=o.items.reduce((n,i)=>n+i.qty,0);
    stockTotal=Math.max(0,stockTotal-units);vehicleStock+=units;
-   o.status='En reparto';addMovement('Salida a reparto · '+o.id,'Unidad '+unit.id+' · '+units+' unidades','En reparto');
+   o.status='En reparto';pending=Math.max(0,pending-1);transit++;addMovement('Salida a reparto · '+o.id,'Unidad '+unit.id+' · '+units+' unidades','En reparto');
    toast(o.id+' asignado a Unidad '+unit.id+'.');
   }else if(o.status==='En reparto'){
    const result=(prompt('Resultado de la visita:\n1 = Entregado\n2 = Incidencia\n3 = Comercio cerrado','1')||'').trim();
    if(result==='1'){
-    o.status='Entregado';const units=o.items.reduce((n,i)=>n+i.qty,0);vehicleStock=Math.max(0,vehicleStock-units);delivered++;
+    o.status='Entregado';const units=o.items.reduce((n,i)=>n+i.qty,0);vehicleStock=Math.max(0,vehicleStock-units);transit=Math.max(0,transit-1);delivered++;
     const unit=fleet.find(v=>v.id===o.unit);if(unit)unit.status='Próxima parada';
     addMovement('Entrega confirmada · '+o.id,'Unidad '+o.unit+' · '+o.customer,'Entregado');
     toast(o.id+' marcado como entregado.');
    }else if(result==='2'||result==='3'){
-    o.status=result==='2'?'Incidencia':'Devolución pendiente';
+    o.status=result==='2'?'Incidencia':'Devolución pendiente';transit=Math.max(0,transit-1);
     o.returnReason=result==='2'?'Incidencia reportada':'Comercio cerrado';
     addMovement('Visita sin entrega · '+o.id,o.returnReason+' · Unidad '+o.unit,o.status);
     toast(o.id+': '+o.returnReason.toLowerCase()+'. Conciliá al regreso.');
@@ -263,6 +263,8 @@ renderFleet();renderStock();renderProducts();renderCart();renderChart();renderLo
  }
  // Reemplaza el alta superficial de pedidos de la v1 por un registro operativo.
  $id('submitOrder').onclick=createOrder;
+ $id('simulateBtn').onclick=()=>{updateDelivery();refreshCounters();};
+ $id('advanceBtn').onclick=()=>{updateDelivery();renderFleet();refreshCounters();};
  // Columna comprometido: muestra reservas reales de los pedidos preparados.
  const baseRenderStock=renderStock;
  renderStock=function(){
