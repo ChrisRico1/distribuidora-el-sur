@@ -169,11 +169,12 @@ renderFleet();renderStock();renderProducts();renderCart();renderChart();renderLo
    (s.fleet||[]).forEach(x=>{const v=fleet.find(v=>v.id===x.id);if(v)v.status=x.status});
   }catch(e){console.warn('Estado local inválido; se inicia una sesión nueva.',e);}
  }
- const orderItems=o=>o.items.map(i=>i.qty+' × '+i.name).join(', ');
+ const esc=value=>String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+ const orderItems=o=>o.items.map(i=>i.qty+' × '+esc(i.name)).join(', ');
  const statusTone=s=>s==='Entregado'?'s-green':s==='En reparto'?'s-blue':s==='Incidencia'||s==='Devolución pendiente'?'s-orange':s==='Devuelto'?'s-green':'s-orange';
  function addMovement(title,detail,state){
   const box=$id('movementList'); if(!box)return;
-  box.insertAdjacentHTML('afterbegin','<div class="list-row"><div class="row-main"><strong>'+title+'</strong><small>'+detail+'</small></div><span class="status '+statusTone(state)+'">'+state+'</span></div>');
+  box.insertAdjacentHTML('afterbegin','<div class="list-row"><div class="row-main"><strong>'+esc(title)+'</strong><small>'+esc(detail)+'</small></div><span class="status '+statusTone(state)+'">'+esc(state)+'</span></div>');
  }
  function refreshCounters(){
   const count=orders.length,amount=orders.reduce((n,o)=>n+o.total,0);
@@ -199,7 +200,7 @@ renderFleet();renderStock();renderProducts();renderCart();renderChart();renderLo
   body.innerHTML=orders.slice().reverse().map(o=>{
    let action=o.status==='Ingresado'?'Preparar pedido':o.status==='Preparado'?'Asignar vehículo':o.status==='En reparto'?'Registrar resultado':(['Incidencia','Devolución pendiente'].includes(o.status)?'Conciliar devolución':'—');
    let disabled=['Entregado','Devuelto'].includes(o.status);
-   return '<tr><td><strong>'+o.id+'</strong></td><td>'+o.customer+'<br><small>'+o.zone+'</small></td><td>'+orderItems(o)+'</td><td>'+money(o.total)+'</td><td><span class="status '+statusTone(o.status)+'">'+o.status+'</span></td><td>'+(o.unit||'—')+'</td><td><button class="btn" data-order-action="'+o.id+'" '+(disabled?'disabled':'')+'>'+action+'</button></td></tr>';
+   return '<tr><td><strong>'+esc(o.id)+'</strong></td><td>'+esc(o.customer)+'<br><small>'+esc(o.zone)+'</small></td><td>'+orderItems(o)+'</td><td>'+money(o.total)+'</td><td><span class="status '+statusTone(o.status)+'">'+esc(o.status)+'</span></td><td>'+esc(o.unit||'—')+'</td><td><button class="btn" data-order-action="'+esc(o.id)+'" '+(disabled?'disabled':'')+'>'+action+'</button></td></tr>';
   }).join('');
   body.querySelectorAll('[data-order-action]').forEach(b=>b.addEventListener('click',()=>advanceOrder(b.dataset.orderAction)));
   refreshCounters();
