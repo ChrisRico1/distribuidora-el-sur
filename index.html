@@ -64,19 +64,21 @@
    <div class="notice">El inventario de esta demo es independiente de cualquier sistema real. Las operaciones de carga y devolución actualizan los datos locales de la interfaz para mostrar el circuito completo.</div>
    <div class="grid kpis"><div class="panel"><div class="kpi-top">Productos activos</div><div class="kpi-value">126</div><div class="kpi-note">Catálogo mayorista simulado</div></div><div class="panel"><div class="kpi-top">Unidades en depósito</div><div class="kpi-value" id="stockTotal">8.420</div><div class="kpi-note">Stock físico disponible</div></div><div class="panel"><div class="kpi-top">En vehículos</div><div class="kpi-value" id="vehicleStock">1.286</div><div class="kpi-note">Mercadería asignada a reparto</div></div><div class="panel"><div class="kpi-top">Devoluciones del día</div><div class="kpi-value" id="returnsCount">12</div><div class="kpi-note">Pendientes de conciliación: 3</div></div></div>
    <div class="panel"><div class="panel-head"><h2>Stock por producto</h2><span>Depósito central · unidades</span></div><div class="toolbar"><input class="search" id="stockSearch" placeholder="Buscar producto o SKU…"><select class="search" id="stockFilter"><option value="all">Todos los niveles</option><option value="low">Stock bajo</option><option value="ok">Stock normal</option></select></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Producto</th><th>SKU</th><th>Stock disponible</th><th>Comprometido</th><th>Nivel</th></tr></thead><tbody id="stockRows"></tbody></table></div></div>
+   <div class="panel" style="margin-top:16px"><div class="panel-head"><h2>Circuito de pedidos</h2><span>Pedidos del portal · operación integrada</span></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Pedido</th><th>Comercio</th><th>Detalle</th><th>Total</th><th>Estado</th><th>Unidad</th><th>Acción</th></tr></thead><tbody id="orderRows"><tr><td colspan="7" class="empty">Todavía no hay pedidos nuevos. Generá uno desde el portal mayorista.</td></tr></tbody></table></div></div>
    <div class="panel" style="margin-top:16px"><div class="panel-head"><h2>Últimos movimientos</h2><span>Registro de ejemplo</span></div><div class="list" id="movementList"><div class="list-row"><div class="row-main"><strong>Salida a reparto · Unidad 04</strong><small>12 cajas · 09:12</small></div><span class="status s-blue">Despacho</span></div><div class="list-row"><div class="row-main"><strong>Devolución · Unidad 02</strong><small>3 unidades · 08:56</small></div><span class="status s-orange">A conciliar</span></div></div></div>
   </section>
   <section class="section" id="analytics">
    <div class="page-head"><div><div class="eyebrow">DATOS · DECISIONES COMERCIALES</div><h1>Inteligencia de negocios</h1><p>Ventas, mix de productos y rentabilidad por localidad.</p></div><div class="actions"><button class="btn">Período: últimos 30 días⌄</button><button class="btn primary" id="exportBtn">↓ Exportar resumen</button></div></div>
    <div class="notice">Indicadores construidos con información ficticia. En producción se alimentarían desde pedidos, facturación, costos y cierres de reparto.</div>
    <div class="grid kpis"><div class="panel"><div class="kpi-top">Facturación</div><div class="kpi-value">$ 42,8 M</div><div class="kpi-note"><span class="positive">↑ 6,2%</span> vs. período anterior</div></div><div class="panel"><div class="kpi-top">Margen bruto</div><div class="kpi-value">24,8%</div><div class="kpi-note"><span class="positive">↑ 1,4 pp</span> vs. período anterior</div></div><div class="panel"><div class="kpi-top">Pedidos</div><div class="kpi-value">1.284</div><div class="kpi-note">Promedio 42,8 por día</div></div><div class="panel"><div class="kpi-top">Ticket promedio</div><div class="kpi-value">$ 33.333</div><div class="kpi-note">Por pedido confirmado</div></div></div>
+   <div class="grid kpis" style="margin-bottom:16px"><div class="panel"><div class="kpi-top">Pedidos generados en esta demo</div><div class="kpi-value" id="liveOrderCount">0</div><div class="kpi-note">Desde el portal mayorista</div></div><div class="panel"><div class="kpi-top">Importe de pedidos demo</div><div class="kpi-value" id="liveOrderAmount">$ 0</div><div class="kpi-note">Valor acumulado de pedidos ingresados</div></div><div class="panel"><div class="kpi-top">Entregas de pedidos demo</div><div class="kpi-value" id="liveOrderDelivered">0</div><div class="kpi-note">Pedidos marcados como entregados</div></div><div class="panel"><div class="kpi-top">Devoluciones conciliadas</div><div class="kpi-value" id="liveOrderReturns">0</div><div class="kpi-note">Reingreso de mercadería al depósito</div></div></div>
    <div class="grid dashboard-grid"><div class="panel"><div class="panel-head"><h2>Facturación por semana</h2><span>Millones de pesos</span></div><div class="chart" id="salesChart"></div><div class="legend"><span><i class="legend-dot" style="background:var(--cyan)"></i>Facturación</span><span><i class="legend-dot" style="background:var(--lime)"></i>Margen</span></div></div><div class="panel"><div class="panel-head"><h2>Ventas por localidad</h2><span>Participación</span></div><div id="localityRows"></div></div></div>
    <div class="grid split" style="margin-top:16px"><div class="panel"><div class="panel-head"><h2>Productos más vendidos</h2><span>Unidades · 30 días</span></div><div class="list"><div class="list-row"><div class="row-main"><strong>Gaseosa cola 2,25 L</strong><small>1.840 unidades</small></div><strong>$ 5,6 M</strong></div><div class="list-row"><div class="row-main"><strong>Agua mineral 2 L</strong><small>1.420 unidades</small></div><strong>$ 2,1 M</strong></div><div class="list-row"><div class="row-main"><strong>Arroz largo fino 1 kg</strong><small>1.180 unidades</small></div><strong>$ 1,8 M</strong></div><div class="list-row"><div class="row-main"><strong>Lavandina 1 L</strong><small>960 unidades</small></div><strong>$ 890 mil</strong></div></div></div><div class="panel"><div class="panel-head"><h2>Oportunidad comercial</h2><span>Lectura de datos</span></div><p style="font-size:12px;line-height:1.7;color:#b1c3c7">Lanús concentra el mayor volumen de bebidas. En Lomas de Zamora crece la participación de productos de limpieza. Una segmentación por localidad permite diseñar promociones y ajustar la composición de cada carga.</p><div class="status s-green">Sugerencia basada en datos simulados</div></div></div>
   </section>
   <section class="section" id="portal">
    <div class="page-head"><div><div class="eyebrow">AUTOGESTIÓN COMERCIAL</div><h1>Portal mayorista</h1><p>Catálogo, disponibilidad y pedidos para comercios clientes.</p></div><div class="actions"><span class="demo-pill">VISTA CLIENTE · DEMO</span></div></div>
    <div class="notice">Portal demostrativo. Los precios y la disponibilidad son ficticios. El envío de pedidos no está conectado a WhatsApp, ERP ni a un sistema de facturación.</div>
-   <div class="grid" style="grid-template-columns:minmax(0,1fr) 300px;align-items:start"><div><div class="toolbar"><input class="search" id="catalogSearch" placeholder="Buscar en el catálogo…"><select class="search"><option>Todas las categorías</option><option>Bebidas</option><option>Almacén</option><option>Limpieza</option></select></div><div class="grid product-grid" id="products"></div></div><div class="panel cart"><div class="panel-head"><h2>Tu pedido</h2><span id="cartCount">0 artículos</span></div><div id="cartItems"><div class="empty">Agregá productos para comenzar.</div></div><div class="cart-line" style="font-weight:800;font-size:13px"><span>Total estimado</span><span class="price" id="cartTotal">$ 0</span></div><button class="btn primary" style="width:100%;margin-top:13px" id="submitOrder">Confirmar pedido demo</button><button class="btn ghost" style="width:100%;margin-top:8px" id="registerBtn">Solicitar alta comercial</button><p style="font-size:10px;color:var(--muted);line-height:1.5">Pedido de prueba: no genera una venta real ni reserva stock.</p></div></div>
+   <div class="grid" style="grid-template-columns:minmax(0,1fr) 300px;align-items:start"><div><div class="toolbar"><input class="search" id="catalogSearch" placeholder="Buscar en el catálogo…"><select class="search"><option>Todas las categorías</option><option>Bebidas</option><option>Almacén</option><option>Limpieza</option></select></div><div class="grid product-grid" id="products"></div></div><div class="panel cart"><div class="panel-head"><h2>Tu pedido</h2><span id="cartCount">0 artículos</span></div><div style="display:grid;gap:8px;margin:12px 0"><input class="search" id="orderCustomer" placeholder="Nombre del comercio" value="Almacén El Puente"><input class="search" id="orderZone" placeholder="Localidad / zona" value="Lanús"></div><div id="cartItems"><div class="empty">Agregá productos para comenzar.</div></div><div class="cart-line" style="font-weight:800;font-size:13px"><span>Total estimado</span><span class="price" id="cartTotal">$ 0</span></div><button class="btn primary" style="width:100%;margin-top:13px" id="submitOrder">Confirmar pedido demo</button><button class="btn ghost" style="width:100%;margin-top:8px" id="registerBtn">Solicitar alta comercial</button><p style="font-size:10px;color:var(--muted);line-height:1.5">Pedido de prueba: no genera una venta real ni reserva stock.</p></div></div>
   </section>
  </div>
 </main>
@@ -131,5 +133,152 @@ $('#registerBtn').onclick=()=>{let name=prompt('Nombre del comercio (demo):');if
 $('#exportBtn').onclick=()=>{let csv='Localidad,Participacion\nLanus,28\nLomas de Zamora,24\nAvellaneda,19\nQuilmes,16\nAlmirante Brown,13';let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='el-sur-resumen-demo.csv';a.click();URL.revokeObjectURL(a.href)};
 renderFleet();renderStock();renderProducts();renderCart();renderChart();renderLocalities();
 </script>
+
+<script>
+/* V2 · Flujo operativo integrado. Persistencia local exclusiva del navegador demo. */
+(()=>{
+ const KEY='elsur-demo-v2';
+ const $id=id=>document.getElementById(id);
+ let orders=[];
+ let reserved={};
+ let demoReturns=0;
+ let orderSequence=1;
+ const original={
+  stockTotal:typeof stockTotal!=='undefined'?stockTotal:8420,
+  vehicleStock:typeof vehicleStock!=='undefined'?vehicleStock:1286,
+  returns:typeof returns!=='undefined'?returns:12
+ };
+ function save(){
+  try{localStorage.setItem(KEY,JSON.stringify({
+   orders,reserved,demoReturns,orderSequence,stockTotal,vehicleStock,returns,delivered,transit,pending,
+   products:products.map(p=>({sku:p.sku,stock:p.stock})),
+   fleet:fleet.map(v=>({id:v.id,status:v.status}))
+  }));}catch(e){console.warn('No se pudo guardar el estado local de la demo',e);}
+ }
+ function restore(){
+  try{
+   const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(!s)return;
+   orders=s.orders||[]; reserved=s.reserved||{}; demoReturns=s.demoReturns||0; orderSequence=s.orderSequence||1;
+   if(Number.isFinite(s.stockTotal))stockTotal=s.stockTotal;
+   if(Number.isFinite(s.vehicleStock))vehicleStock=s.vehicleStock;
+   if(Number.isFinite(s.returns))returns=s.returns;
+   if(Number.isFinite(s.delivered))delivered=s.delivered;
+   if(Number.isFinite(s.transit))transit=s.transit;
+   if(Number.isFinite(s.pending))pending=s.pending;
+   (s.products||[]).forEach(x=>{const p=products.find(p=>p.sku===x.sku);if(p)p.stock=x.stock});
+   (s.fleet||[]).forEach(x=>{const v=fleet.find(v=>v.id===x.id);if(v)v.status=x.status});
+  }catch(e){console.warn('Estado local inválido; se inicia una sesión nueva.',e);}
+ }
+ const orderItems=o=>o.items.map(i=>i.qty+' × '+i.name).join(', ');
+ const statusTone=s=>s==='Entregado'?'s-green':s==='En reparto'?'s-blue':s==='Incidencia'||s==='Devolución pendiente'?'s-orange':s==='Devuelto'?'s-green':'s-orange';
+ function addMovement(title,detail,state){
+  const box=$id('movementList'); if(!box)return;
+  box.insertAdjacentHTML('afterbegin','<div class="list-row"><div class="row-main"><strong>'+title+'</strong><small>'+detail+'</small></div><span class="status '+statusTone(state)+'">'+state+'</span></div>');
+ }
+ function refreshCounters(){
+  const count=orders.length,amount=orders.reduce((n,o)=>n+o.total,0);
+  if($id('liveOrderCount'))$id('liveOrderCount').textContent=count;
+  if($id('liveOrderAmount'))$id('liveOrderAmount').textContent=money(amount);
+  if($id('liveOrderDelivered'))$id('liveOrderDelivered').textContent=orders.filter(o=>o.status==='Entregado').length;
+  if($id('liveOrderReturns'))$id('liveOrderReturns').textContent=demoReturns;
+  if($id('stockTotal'))$id('stockTotal').textContent=stockTotal.toLocaleString('es-AR');
+  if($id('vehicleStock'))$id('vehicleStock').textContent=vehicleStock.toLocaleString('es-AR');
+  if($id('returnsCount'))$id('returnsCount').textContent=returns;
+  if($id('kpiVehicles'))$id('kpiVehicles').innerHTML=fleet.filter(v=>['En camino','Próxima parada','Demora reportada'].includes(v.status)).length+' <small style="font-size:13px;color:var(--muted)">/ 10</small>';
+  if($id('kpiDeliveries'))$id('kpiDeliveries').textContent=64;
+  if($id('deliveredCount'))$id('deliveredCount').textContent=delivered+' entregadas';
+  if($id('progressValue'))$id('progressValue').innerHTML=delivered+' <span style="font-size:12px;color:var(--muted);font-weight:500">/ 64 entregas</span>';
+  if($id('progressBar'))$id('progressBar').style.width=Math.min(100,delivered/64*100)+'%';
+  if($id('logDelivered'))$id('logDelivered').textContent=delivered;
+  if($id('logTransit'))$id('logTransit').textContent=transit;
+  if($id('logPending'))$id('logPending').textContent=pending;
+ }
+ function renderOrders(){
+  const body=$id('orderRows');if(!body)return;
+  if(!orders.length){body.innerHTML='<tr><td colspan="7" class="empty">Todavía no hay pedidos nuevos. Generá uno desde el portal mayorista.</td></tr>';refreshCounters();return;}
+  body.innerHTML=orders.slice().reverse().map(o=>{
+   let action=o.status==='Ingresado'?'Preparar pedido':o.status==='Preparado'?'Asignar vehículo':o.status==='En reparto'?'Registrar resultado':(['Incidencia','Devolución pendiente'].includes(o.status)?'Conciliar devolución':'—');
+   let disabled=['Entregado','Devuelto'].includes(o.status);
+   return '<tr><td><strong>'+o.id+'</strong></td><td>'+o.customer+'<br><small>'+o.zone+'</small></td><td>'+orderItems(o)+'</td><td>'+money(o.total)+'</td><td><span class="status '+statusTone(o.status)+'">'+o.status+'</span></td><td>'+(o.unit||'—')+'</td><td><button class="btn" data-order-action="'+o.id+'" '+(disabled?'disabled':'')+'>'+action+'</button></td></tr>';
+  }).join('');
+  body.querySelectorAll('[data-order-action]').forEach(b=>b.addEventListener('click',()=>advanceOrder(b.dataset.orderAction)));
+  refreshCounters();
+ }
+ function updateStockViews(){
+  renderStock();renderProducts();renderCart();renderFleet();renderOrders();refreshCounters();save();
+ }
+ function createOrder(){
+  const items=Object.entries(cart).filter(([sku,qty])=>qty>0).map(([sku,qty])=>{const p=products.find(x=>x.sku===sku);return {sku,name:p.name,qty,price:p.price};});
+  if(!items.length){toast('El carrito está vacío.');return;}
+  const customer=($id('orderCustomer')?.value||'Comercio demo').trim();
+  const zone=($id('orderZone')?.value||'Zona Sur').trim();
+  if(!customer||!zone){toast('Completá el comercio y la localidad.');return;}
+  const total=items.reduce((n,i)=>n+i.qty*i.price,0);
+  const id='ES-'+String(1060+orderSequence++).padStart(4,'0');
+  orders.push({id,customer,zone,items,total,status:'Ingresado',unit:null,createdAt:new Date().toISOString()});
+  cart={};renderProducts();renderCart();renderOrders();save();
+  addMovement('Pedido ingresado · '+id,customer+' · '+zone,'Ingresado');
+  toast('Pedido '+id+' ingresó al circuito de depósito.');
+  if(typeof go==='function')go('inventory');
+ }
+ function advanceOrder(id){
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  if(o.status==='Ingresado'){
+   const shortage=o.items.find(i=>products.find(p=>p.sku===i.sku).stock<i.qty);
+   if(shortage){toast('Stock insuficiente para '+shortage.name+'.');return;}
+   o.items.forEach(i=>{const p=products.find(p=>p.sku===i.sku);p.stock-=i.qty;reserved[i.sku]=(reserved[i.sku]||0)+i.qty;});
+   o.status='Preparado';addMovement('Pedido preparado · '+o.id,orderItems(o),'Preparado');
+   toast(o.id+' preparado. Stock reservado.');
+  }else if(o.status==='Preparado'){
+   const choices=fleet.filter(v=>v.status==='En preparación'||v.status==='Entregado');
+   const unit=choices[0]||fleet.find(v=>v.status==='En camino');
+   if(!unit){toast('No hay una unidad disponible para asignar.');return;}
+   o.unit=unit.id;unit.status='En camino';
+   o.items.forEach(i=>{reserved[i.sku]=Math.max(0,(reserved[i.sku]||0)-i.qty);});
+   const units=o.items.reduce((n,i)=>n+i.qty,0);
+   stockTotal=Math.max(0,stockTotal-units);vehicleStock+=units;
+   o.status='En reparto';addMovement('Salida a reparto · '+o.id,'Unidad '+unit.id+' · '+units+' unidades','En reparto');
+   toast(o.id+' asignado a Unidad '+unit.id+'.');
+  }else if(o.status==='En reparto'){
+   const result=(prompt('Resultado de la visita:\n1 = Entregado\n2 = Incidencia\n3 = Comercio cerrado','1')||'').trim();
+   if(result==='1'){
+    o.status='Entregado';const units=o.items.reduce((n,i)=>n+i.qty,0);vehicleStock=Math.max(0,vehicleStock-units);delivered++;
+    const unit=fleet.find(v=>v.id===o.unit);if(unit)unit.status='Próxima parada';
+    addMovement('Entrega confirmada · '+o.id,'Unidad '+o.unit+' · '+o.customer,'Entregado');
+    toast(o.id+' marcado como entregado.');
+   }else if(result==='2'||result==='3'){
+    o.status=result==='2'?'Incidencia':'Devolución pendiente';
+    o.returnReason=result==='2'?'Incidencia reportada':'Comercio cerrado';
+    addMovement('Visita sin entrega · '+o.id,o.returnReason+' · Unidad '+o.unit,o.status);
+    toast(o.id+': '+o.returnReason.toLowerCase()+'. Conciliá al regreso.');
+   }else{toast('Resultado no reconocido. No se modificó el pedido.');return;}
+  }else if(o.status==='Incidencia'||o.status==='Devolución pendiente'){
+   o.items.forEach(i=>{const p=products.find(p=>p.sku===i.sku);p.stock+=i.qty;});
+   const units=o.items.reduce((n,i)=>n+i.qty,0);vehicleStock=Math.max(0,vehicleStock-units);stockTotal+=units;returns++;demoReturns++;
+   o.status='Devuelto';const unit=fleet.find(v=>v.id===o.unit);if(unit)unit.status='Entregado';
+   addMovement('Devolución conciliada · '+o.id,units+' unidades reintegradas · Unidad '+o.unit,'Devuelto');
+   toast('Devolución de '+o.id+' conciliada y reintegrada al stock.');
+  }
+  updateStockViews();
+ }
+ // Reemplaza el alta superficial de pedidos de la v1 por un registro operativo.
+ $id('submitOrder').onclick=createOrder;
+ // Columna comprometido: muestra reservas reales de los pedidos preparados.
+ const baseRenderStock=renderStock;
+ renderStock=function(){
+  const q=($id('stockSearch')?.value||'').toLowerCase(),f=$id('stockFilter')?.value||'all';
+  const rows=products.filter(p=>(p.name+' '+p.sku).toLowerCase().includes(q)).filter(p=>f==='all'||(f==='low'?p.stock<50:p.stock>=50));
+  $id('stockRows').innerHTML=rows.map(p=>'<tr><td><strong>'+p.name+'</strong></td><td>'+p.sku+'</td><td>'+p.stock.toLocaleString('es-AR')+'</td><td>'+(reserved[p.sku]||0)+'</td><td><span class="stock-bar"><i style="width:'+Math.min(100,p.stock/3)+'%"></i></span><span class="status '+(p.stock<50?'s-orange':'s-green')+'">'+(p.stock<50?'Bajo':'Normal')+'</span></td></tr>').join('');
+ };
+ // Las cargas y devoluciones manuales de la v1 permanecen disponibles, pero actualizan el estado persistido.
+ const oldLoad=$id('loadBtn').onclick;
+ $id('loadBtn').onclick=()=>{oldLoad();save();};
+ const oldReturn=$id('returnBtn').onclick;
+ $id('returnBtn').onclick=()=>{oldReturn();save();};
+ restore();
+ updateStockViews();
+})();
+</script>
+
 </body>
 </html>
