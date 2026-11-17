@@ -28,7 +28,7 @@
  <div class="sidebar-foot"><span class="demo-pill"><i class="dot"></i> ENTORNO DEMO</span><p>Datos ficticios para demostración comercial. No representa una operación en tiempo real.</p>Datacraft Argentina · 2026</div>
 </aside>
 <main class="main">
- <header class="topbar"><div class="row" style="display:flex;align-items:center;gap:12px"><button class="btn mobile-menu" id="menuBtn">☰</button><span class="crumb">Distribuidora El Sur <span style="color:#48636b">/</span> <b id="crumb">Resumen general</b></span></div><div class="top-right"><span class="demo-pill"><i class="dot"></i> SIMULACIÓN ACTIVA</span><div class="avatar">ES</div></div></header>
+ <header class="topbar"><div class="row" style="display:flex;align-items:center;gap:12px"><button class="btn mobile-menu" id="menuBtn">☰</button><span class="crumb">Distribuidora El Sur <span style="color:#48636b">/</span> <b id="crumb">Resumen general</b></span></div><div class="top-right"><span class="demo-pill"><i class="dot"></i> SIMULACIÓN ACTIVA</span><button class="btn ghost" id="resetDemoBtn" title="Borra los datos locales de esta demostración">Reiniciar demo</button><div class="avatar">ES</div></div></header>
  <div class="content">
   <section class="section active" id="overview">
    <div class="page-head"><div><div class="eyebrow">CENTRO DE OPERACIONES · HOY</div><h1>Resumen general</h1><p>Una vista unificada de ventas, depósito y distribución.</p></div><div class="actions"><button class="btn" id="simulateBtn">↻ Simular avance de reparto</button><button class="btn primary" data-goto="portal">+ Nuevo pedido</button></div></div>
@@ -72,6 +72,7 @@
    <div class="notice">Indicadores construidos con información ficticia. En producción se alimentarían desde pedidos, facturación, costos y cierres de reparto.</div>
    <div class="grid kpis"><div class="panel"><div class="kpi-top">Facturación</div><div class="kpi-value">$ 42,8 M</div><div class="kpi-note"><span class="positive">↑ 6,2%</span> vs. período anterior</div></div><div class="panel"><div class="kpi-top">Margen bruto</div><div class="kpi-value">24,8%</div><div class="kpi-note"><span class="positive">↑ 1,4 pp</span> vs. período anterior</div></div><div class="panel"><div class="kpi-top">Pedidos</div><div class="kpi-value">1.284</div><div class="kpi-note">Promedio 42,8 por día</div></div><div class="panel"><div class="kpi-top">Ticket promedio</div><div class="kpi-value">$ 33.333</div><div class="kpi-note">Por pedido confirmado</div></div></div>
    <div class="grid kpis" style="margin-bottom:16px"><div class="panel"><div class="kpi-top">Pedidos generados en esta demo</div><div class="kpi-value" id="liveOrderCount">0</div><div class="kpi-note">Desde el portal mayorista</div></div><div class="panel"><div class="kpi-top">Importe de pedidos demo</div><div class="kpi-value" id="liveOrderAmount">$ 0</div><div class="kpi-note">Valor acumulado de pedidos ingresados</div></div><div class="panel"><div class="kpi-top">Entregas de pedidos demo</div><div class="kpi-value" id="liveOrderDelivered">0</div><div class="kpi-note">Pedidos marcados como entregados</div></div><div class="panel"><div class="kpi-top">Devoluciones conciliadas</div><div class="kpi-value" id="liveOrderReturns">0</div><div class="kpi-note">Reingreso de mercadería al depósito</div></div></div>
+   <div class="panel" style="margin-bottom:16px"><div class="panel-head"><h2>Lectura del circuito operativo</h2><span>Pedidos creados en esta demostración</span></div><div id="liveOrderAnalysis"><div class="empty">Todavía no hay pedidos para analizar.</div></div></div>
    <div class="grid dashboard-grid"><div class="panel"><div class="panel-head"><h2>Facturación por semana</h2><span>Millones de pesos</span></div><div class="chart" id="salesChart"></div><div class="legend"><span><i class="legend-dot" style="background:var(--cyan)"></i>Facturación</span><span><i class="legend-dot" style="background:var(--lime)"></i>Margen</span></div></div><div class="panel"><div class="panel-head"><h2>Ventas por localidad</h2><span>Participación</span></div><div id="localityRows"></div></div></div>
    <div class="grid split" style="margin-top:16px"><div class="panel"><div class="panel-head"><h2>Productos más vendidos</h2><span>Unidades · 30 días</span></div><div class="list"><div class="list-row"><div class="row-main"><strong>Gaseosa cola 2,25 L</strong><small>1.840 unidades</small></div><strong>$ 5,6 M</strong></div><div class="list-row"><div class="row-main"><strong>Agua mineral 2 L</strong><small>1.420 unidades</small></div><strong>$ 2,1 M</strong></div><div class="list-row"><div class="row-main"><strong>Arroz largo fino 1 kg</strong><small>1.180 unidades</small></div><strong>$ 1,8 M</strong></div><div class="list-row"><div class="row-main"><strong>Lavandina 1 L</strong><small>960 unidades</small></div><strong>$ 890 mil</strong></div></div></div><div class="panel"><div class="panel-head"><h2>Oportunidad comercial</h2><span>Lectura de datos</span></div><p style="font-size:12px;line-height:1.7;color:#b1c3c7">Lanús concentra el mayor volumen de bebidas. En Lomas de Zamora crece la participación de productos de limpieza. Una segmentación por localidad permite diseñar promociones y ajustar la composición de cada carga.</p><div class="status s-green">Sugerencia basada en datos simulados</div></div></div>
   </section>
@@ -193,6 +194,17 @@ renderFleet();renderStock();renderProducts();renderCart();renderChart();renderLo
   if($id('logDelivered'))$id('logDelivered').textContent=delivered;
   if($id('logTransit'))$id('logTransit').textContent=transit;
   if($id('logPending'))$id('logPending').textContent=pending;
+  renderLiveAnalysis();
+ }
+ function renderLiveAnalysis(){
+  const host=$id('liveOrderAnalysis');if(!host)return;
+  if(!orders.length){host.innerHTML='<div class="empty">Todavía no hay pedidos para analizar. Creá un pedido desde el portal mayorista.</div>';return;}
+  const states=['Ingresado','Preparado','En reparto','Entregado','Incidencia','Devolución pendiente','Devuelto'];
+  const byState=states.map(s=>({name:s,count:orders.filter(o=>o.status===s).length}));
+  const zones={};orders.forEach(o=>{const key=o.zone||'Sin localidad';if(!zones[key])zones[key]={count:0,total:0};zones[key].count++;zones[key].total+=Number(o.total)||0;});
+  const zoneRows=Object.entries(zones).sort((a,b)=>b[1].total-a[1].total).map(([name,v])=>'<div class="list-row"><div class="row-main"><strong>'+esc(name)+'</strong><small>'+v.count+' pedido(s)</small></div><strong>'+money(v.total)+'</strong></div>').join('');
+  const stateRows=byState.map(s=>'<div class="list-row"><span>'+esc(s.name)+'</span><strong>'+s.count+'</strong></div>').join('');
+  host.innerHTML='<div class="grid split"><div><div class="eyebrow" style="margin-bottom:8px">PEDIDOS POR ESTADO</div><div class="list">'+stateRows+'</div></div><div><div class="eyebrow" style="margin-bottom:8px">IMPORTE POR LOCALIDAD</div><div class="list">'+zoneRows+'</div></div></div>';
  }
  function renderOrders(){
   const body=$id('orderRows');if(!body)return;
@@ -264,8 +276,8 @@ renderFleet();renderStock();renderProducts();renderCart();renderChart();renderLo
  }
  // Reemplaza el alta superficial de pedidos de la v1 por un registro operativo.
  $id('submitOrder').onclick=createOrder;
- $id('simulateBtn').onclick=()=>{updateDelivery();refreshCounters();};
- $id('advanceBtn').onclick=()=>{updateDelivery();renderFleet();refreshCounters();};
+ $id('simulateBtn').onclick=()=>{updateDelivery();refreshCounters();save();};
+ $id('advanceBtn').onclick=()=>{updateDelivery();renderFleet();refreshCounters();save();};
  // Columna comprometido: muestra reservas reales de los pedidos preparados.
  const baseRenderStock=renderStock;
  renderStock=function(){
@@ -278,8 +290,22 @@ renderFleet();renderStock();renderProducts();renderCart();renderChart();renderLo
  $id('loadBtn').onclick=()=>{oldLoad();save();};
  const oldReturn=$id('returnBtn').onclick;
  $id('returnBtn').onclick=()=>{oldReturn();save();};
+ const baseRenderFleet=renderFleet;
+ renderFleet=function(){
+  baseRenderFleet();
+  $id('fleetRows')?.querySelectorAll('[data-status]').forEach(b=>{
+   const handler=b.onclick;
+   b.onclick=()=>{handler();save();};
+  });
+ };
  restore();
  updateStockViews();
+ $id('resetDemoBtn')?.addEventListener('click',()=>{
+  if(confirm('Esto borrará los pedidos y cambios guardados en este navegador y restaurará la demo inicial. ¿Continuar?')){
+   localStorage.removeItem(KEY);
+   location.reload();
+  }
+ });
 })();
 </script>
 
